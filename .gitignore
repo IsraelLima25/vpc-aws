@@ -1,0 +1,9 @@
+# Diretórios e arquivos do Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+
+# Variáveis sensíveis (opcional)
+*.tfvars
+*.tfvars.json
