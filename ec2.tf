@@ -17,21 +17,3 @@ resource "aws_instance" "ec2-fiap-test-public" {
   }
 
 }
-
-resource "aws_instance" "ec2-fiap-test-private" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = var.ec2Instance
-  key_name      = data.aws_key_pair.lab-fiap-pair.key_name
-  subnet_id     = aws_subnet.private.id
-
-  ebs_block_device {
-    device_name           = "/dev/xvdb"
-    volume_size           = 8
-    volume_type           = "gp3"
-    delete_on_termination = true
-  }
-
-  tags = {
-    Name = "ec2-dev-test-private"
-  }
-}
