@@ -59,7 +59,6 @@ resource "aws_security_group" "rds_mysql" {
     to_port     = 3306
     protocol    = "tcp"
     cidr_blocks = [aws_vpc.vpc-dev.cidr_block] # Exemplo: ["10.0.0.0/16"]
-    # Alternativamente, pode usar security_groups para liberar só para SGs específicos
   }
 }
 

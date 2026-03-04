@@ -1,3 +1,3 @@
 variable "ec2Instance" {
-  default = "t3.micro"
+  default = "t3.medium"
 }
