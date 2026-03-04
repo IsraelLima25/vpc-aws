@@ -3,19 +3,19 @@ resource "aws_lb" "eks_alb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.allow_http.id]
-  subnets            = [aws_subnet.public.id]
+  subnets            = [aws_subnet.public-a.id, aws_subnet.public-b.id]
 }
 
 resource "aws_lb_target_group" "eks_tg" {
   name     = "eks-tg"
-  port     = 8080
+  port     = 30080
   protocol = "HTTP"
   vpc_id   = aws_vpc.vpc-dev.id
 
   health_check {
     path                = "/"
     protocol            = "HTTP"
-    matcher             = "200"
+    matcher             = "200-399"
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2

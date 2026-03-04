@@ -7,11 +7,23 @@ resource "aws_vpc" "vpc-dev" {
   }
 }
 
-resource "aws_subnet" "public" {
+resource "aws_subnet" "public-a" {
   vpc_id                  = aws_vpc.vpc-dev.id
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
-  availability_zone       = "us-east-1a"
+  availability_zone       = "us-east-1b"
+
+  tags = {
+    Name     = "dev-public-sub",
+    Ambiente = "DEV"
+  }
+}
+
+resource "aws_subnet" "public-b" {
+  vpc_id                  = aws_vpc.vpc-dev.id
+  cidr_block              = "10.0.2.0/24"
+  map_public_ip_on_launch = true
+  availability_zone       = "us-east-1c"
 
   tags = {
     Name     = "dev-public-sub",
@@ -21,7 +33,7 @@ resource "aws_subnet" "public" {
 
 resource "aws_subnet" "private-a" {
   vpc_id            = aws_vpc.vpc-dev.id
-  cidr_block        = "10.0.2.0/24"
+  cidr_block        = "10.0.3.0/24"
   availability_zone = "us-east-1b"
 
   tags = {
@@ -32,7 +44,7 @@ resource "aws_subnet" "private-a" {
 
 resource "aws_subnet" "private-b" {
   vpc_id            = aws_vpc.vpc-dev.id
-  cidr_block        = "10.0.3.0/24"
+  cidr_block        = "10.0.4.0/24"
   availability_zone = "us-east-1c"
 
   tags = {

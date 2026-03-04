@@ -3,7 +3,7 @@ variable "db_password" {}
 
 # Cria o segredo no Secrets Manager
 resource "aws_secretsmanager_secret" "db_secret" {
-  name = "meu-app/database-password/v4"
+  name = "meu-app/database-password/v13"
 }
 
 resource "aws_secretsmanager_secret_version" "db_secret" {

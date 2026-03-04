@@ -18,3 +18,7 @@ output "id" {
 output "ecr-repository" {
   value = aws_ecr_repository.ecr-repo.repository_url
 }
+
+output "target-type" {
+  value = aws_lb_target_group.eks_tg.target_type
+}
