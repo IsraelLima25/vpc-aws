@@ -80,7 +80,7 @@ resource "aws_vpc_security_group_ingress_rule" "nodeport_from_alb" {
   to_port                      = 30080
   ip_protocol                  = "tcp"
   referenced_security_group_id = aws_security_group.allow_http.id
-  
+
 }
 
 resource "aws_vpc_security_group_egress_rule" "nodeport_egress" {
