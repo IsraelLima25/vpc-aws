@@ -1,9 +1,10 @@
 resource "aws_eks_cluster" "dev" {
   name     = "dev-eks"
-  role_arn = data.aws_iam_role.labrole.arn
+  role_arn = data.aws_iam_role.labrole.arn  
 
   vpc_config {
     subnet_ids = [aws_subnet.private-a.id, aws_subnet.private-b.id]
+    security_group_ids = [aws_security_group.eks_cluster.id]
   }
   version = "1.30"
 }
@@ -25,7 +26,7 @@ resource "aws_eks_node_group" "dev_nodes" {
     version = "$Latest"
   }
 
-  instance_types = [var.ec2Instance]
+  instance_types = [var.ec2Instance]  
 }
 
 resource "aws_launch_template" "eks_nodes" {
@@ -36,7 +37,7 @@ resource "aws_launch_template" "eks_nodes" {
 
   vpc_security_group_ids = [
     aws_security_group.allow_node_port.id,
-    aws_security_group.allow_http.id
+    aws_security_group.allow_http.id    
   ]
 
   tag_specifications {

@@ -87,3 +87,68 @@ resource "aws_vpc_security_group_egress_rule" "nodeport_egress" {
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
 }
+
+resource "aws_vpc_security_group_ingress_rule" "kubelet" {
+  security_group_id            = aws_security_group.allow_node_port.id
+  referenced_security_group_id = aws_security_group.allow_node_port.id
+  from_port                    = 10250
+  to_port                      = 10250
+  ip_protocol                  = "tcp"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "node_internal" {
+  security_group_id            = aws_security_group.allow_node_port.id
+  referenced_security_group_id = aws_security_group.allow_node_port.id
+  ip_protocol                  = "-1"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "node_vpc_internal" {
+  security_group_id = aws_security_group.allow_node_port.id
+  cidr_ipv4         = aws_vpc.vpc-dev.cidr_block
+  ip_protocol       = "-1"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "metric" {
+  security_group_id            = aws_security_group.allow_node_port.id
+  referenced_security_group_id = aws_security_group.allow_node_port.id
+  from_port                    = 443
+  to_port                      = 443
+  ip_protocol                  = "tcp"
+}
+
+resource "aws_security_group" "eks_cluster" {
+  name   = "eks-cluster-sg"
+  vpc_id = aws_vpc.vpc-dev.id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "eks_api_from_nodes" {
+  security_group_id            = aws_security_group.eks_cluster.id
+  referenced_security_group_id = aws_security_group.allow_node_port.id
+  from_port                    = 443
+  to_port                      = 443
+  ip_protocol                  = "tcp"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "dns_udp" {
+  security_group_id            = aws_security_group.allow_node_port.id
+  referenced_security_group_id = aws_security_group.allow_node_port.id
+  from_port                    = 53
+  to_port                      = 53
+  ip_protocol                  = "udp"
+}
+
+resource "aws_vpc_security_group_ingress_rule" "dns_tcp" {
+  security_group_id            = aws_security_group.allow_node_port.id
+  referenced_security_group_id = aws_security_group.allow_node_port.id
+  from_port                    = 53
+  to_port                      = 53
+  ip_protocol                  = "tcp"
+}
+
+resource "aws_vpc_security_group_egress_rule" "node_to_cluster_api" {
+  security_group_id            = aws_security_group.allow_node_port.id
+  referenced_security_group_id = aws_security_group.eks_cluster.id
+  from_port                    = 443
+  to_port                      = 443
+  ip_protocol                  = "tcp"
+}
