@@ -22,3 +22,7 @@ output "ecr-repository" {
 output "target-type" {
   value = aws_lb_target_group.eks_tg.target_type
 }
+
+output "secret_arn" {
+  value = aws_db_instance.mysql.master_user_secret[0].secret_arn
+}

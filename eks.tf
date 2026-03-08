@@ -49,3 +49,14 @@ resource "aws_launch_template" "eks_nodes" {
   }
 
 }
+
+resource "aws_eks_addon" "metrics_server" {
+  cluster_name  = aws_eks_cluster.dev.name
+  addon_name    = "metrics-server"
+
+  timeouts {
+    create = "5m"
+    update = "5m"
+    delete = "5m"
+  }
+}
